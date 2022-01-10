@@ -1,6 +1,6 @@
 const mongoose = require("mongoose"),
         MAX_LOGIN_ATTEMPTS = 3,
-        LOCK_TIME = 15 * 1000; // 15s
+        LOCK_TIME = 5 * 60 * 1000; // 5mins
 
 
 const schema = new mongoose.Schema({
@@ -11,12 +11,6 @@ const schema = new mongoose.Schema({
     lockUntil: { type: Number}
 });
 
-// expose enum on the model
-schema.statics.failedLogin = {
-    NOT_FOUND: 0,
-    PASSWORD_INCORRECT: 3,
-    MAX_ATTEMPTS: 3
-};
 
 schema.virtual('isLocked').get(function() {
     // check for a future lockUntil timestamp
@@ -43,11 +37,11 @@ schema.methods.incLoginAttempts = function(cb) {
     };
 
 // expose enum on the model, and provide an internal convenience reference 
-    var reasons = schema.statics.failedLogin = {
-    NOT_FOUND: 0,
-    PASSWORD_INCORRECT: 1,
-    MAX_ATTEMPTS: 2
-    };
+    // var reasons = schema.statics.failedLogin = {
+    // NOT_FOUND: 0,
+    // PASSWORD_INCORRECT: 1,
+    // MAX_ATTEMPTS: 2
+    // };
 
 
 const User = mongoose.model("User", schema);

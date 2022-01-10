@@ -1,23 +1,18 @@
-const request = require("supertest");
 const app = require("../../server");
 const User = require("../models/user.model");
-//const endpointUrl = "../app/routes/auth.routes";
-//const newUser = require("../tests/mock-data/mock-data.json");
-const verifySignUp = require("../middleware/verifySignUp");
-// const httpMocks = require("node-mocks-http");
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const should = chai.should();
-const controller = require("../controllers/auth.controller")
-var bcrypt = require("bcryptjs");
+
 
 // use chaiHttp for making the actual HTTP requests   
 chai.use(chaiHttp);
-describe('Signup API', function() {
+describe('Signup & signin API tests', function() {
     beforeEach(function(done) {
         var newUser = new User({
             username: 'test1',
-            password: "123456"
+            password: "123456",
+            loginAttempts: 4,
         });
         
         newUser.save(function(err) {
@@ -25,7 +20,7 @@ describe('Signup API', function() {
         });
     });
     afterEach(function(done) {
-        User.collection.drop().then(function() {
+        User.remove({'username':'test3'}).then(function() {
 
             // success     
         }).catch(function(err) {
@@ -37,51 +32,91 @@ describe('Signup API', function() {
         done();
     });
 
-    it('should fail to add an existing user test1 on /api/auth/signup POST', function(done) {
+    it('should fail to signup existing user test1 on /api/auth/signup POST', function(done) {
         chai.request(app)
             .post('/api/auth/signup')
-            // [verifySignUp.checkDuplicateUsername],
-            // controller.signup )
             .send( {
                 'username': "test1",
                 'password': "123456",
-                'loginAttempts': 0,
-                'lockUntil': null
             })
             .end(function(err, res) {
                 if (err) return err;
                 res.should.have.status(400);
                 res.should.be.json;
-                // res.body.should.be.a('object');
                 res.body.should.have.property('message');
-                res.body.message.should.equal('Failed! Username has been taken.')
-                // res.body[0].should.have.property('password');
-                // res.body[0].should.have.property('_id');
+                res.body.message.should.equal('Failed! Username has been taken.');
                 done();
             });
         });
-
-        it('should failed to login a wrong password user test 2 on /api/auth/signin POST', function(done) {
-            // const pwd = bcrypt.hash("123456",10);
+    it('should fail to signup existing user test2 on /api/auth/signup POST', function(done) {
             chai.request(app)
-                .post('/api/auth/signin')
-                .send( { 
-                    username: 'test1',
-                    password: '1234567'
+                .post('/api/auth/signup')
+                .send( {
+                    'username': "test2",
+                    'password': "123456",
                 })
                 .end(function(err, res) {
                     if (err) return err;
-                    res.should.have.status(401);
+                    res.should.have.status(400);
                     res.should.be.json;
-                    //res.body.password.should.equal('123456');
-                    res.body.message.should.contain("Invalid password! ");
-                    // res.body.should.be.a('object');
-                    // res.should.have.property('username');
-                    // res.body[0].should.have.property('password');
-                    // res.body[0].should.have.property('_id');
+                    res.body.should.have.property('message');
+                    res.body.message.should.equal('Failed! Username has been taken.');
                     done();
                 });
+        });
+    it('should able to signup new user test3 on /api/auth/signup POST', function(done) {
+                chai.request(app)
+                    .post('/api/auth/signup')
+                    .send( {
+                        'username': "test3",
+                        'password': "123456",
+                    })
+                    .end(function(err, res) {
+                        if (err) return err;
+                        res.should.have.status(201);
+                        res.should.be.json;
+                        res.body.should.have.property('message');
+                        res.body.message.should.equal('User added successfully!');
+                        done();
+                    });
+        });
+
+    it('should able to login user test2 on /api/auth/signin POST', function(done) {
+                chai.request(app)
+                .post('/api/auth/signin')
+                .send( { 
+                    username: 'test2',
+                    password: "123456"
+                })
+                .end(function(err, res) {
+                    if (err) return err;
+                    res.body.message.should.equal("Signin successfully!");
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.username.should.equal("test2");
+                    res.body.should.have.property('accessToken');
+                    res.body.should.have.property('id');
+                    //res.body.password.should.equal('123456');
+                    //res.body.should.be.a('object');
+                    //res.body.should.have.property('');
+                    done();
+                });
+        });
+        
+    it('should fail to login locked user test1 on /api/auth/signin POST', function(done) {
+            chai.request(app)
+            .post('/api/auth/signin')
+            .send( { 
+                username: 'test1',
+                password: "123456",
+                loginAttempts: 4,
+            })
+            .end(function(err, res) {
+                if (err) return err;
+                res.body.message.should.contain("User is locked");
+                res.should.have.status(404);
+                res.should.be.json;
+                done();
             });
-
-
+        });
     });
