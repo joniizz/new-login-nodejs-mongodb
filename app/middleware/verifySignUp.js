@@ -10,7 +10,7 @@ checkDuplicateUsername = (req, res, next) => {
             return;
         }
         if(user) {
-            res.status(400).send({massage: "Failed! Username has been taken."});
+            res.status(400).send({message: "Failed! Username has been taken."});
             return;
         };
         next();

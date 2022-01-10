@@ -39,6 +39,6 @@ require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
 
 
-app.listen("8080", () => {
+module.exports = app.listen("8080", () => {
     console.log("Server is running on port 8080");
 });

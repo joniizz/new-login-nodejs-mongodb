@@ -52,7 +52,7 @@ exports.signin = async (req, res) => {
                 bcrypt.compare(req.body.password, user.password).then(
                      async (valid) => {
                          try {
-                            // not lock and no failed attempts
+
                             if(valid) {
                                 var token = jwt.sign({ id: user.id}, config.secret,{
                                     expiresIn: 86400 //24hrs
@@ -71,27 +71,7 @@ exports.signin = async (req, res) => {
                                     username: user.username,
                                     accessToken: token,
                                 });
-                                // if (user.lockUntil <= Date.now()) {
-                                    
-                                // }
-                                // //reset attempts and lock information
-                                //     var updates = {
-                                //         $set: { loginAttempts: 0 },
-                                //         $unset: { lockUntil: 1 }
-                                //     };
-                                //     user.updateOne(updates, function(err) {
-                                //         if (err) return cb(err);
-                                //     });
-                                //     var token = jwt.sign({ id: user.id}, config.secret,{
-                                //         expiresIn: 86400 //24hrs
-                                //     });
-
-                                //     return res.status(200).json({
-                                //         message: "Signin successfully!",
-                                //         id: user.id,
-                                //         username: user.username,
-                                //         accessToken: token,
-                                //     });
+                                
                             }
     
                             if (!valid) {
