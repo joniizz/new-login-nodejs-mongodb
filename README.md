@@ -77,7 +77,7 @@ Create user with a registered username "test1" and password "123456".
 
 ```json
 {
-    "message": "User added successfully!"
+    "message": "Failed! Username has been taken."
 }
 ```
 ## Sign in:
