@@ -2,7 +2,7 @@
 
 This is a basic User-login-app based on Express.js and MongoDB providing a REST API to login-db model.
 
-The entire application is contained within the 'new-login-nodejs-mongodb'folder.
+The entire application is contained within the 'new-login-nodejs-mongodb' folder.
 
 As a user login REST API, this back-end service allows:
 - User to login with a username and password;
