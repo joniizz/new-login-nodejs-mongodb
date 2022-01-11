@@ -69,7 +69,7 @@ Create user with a registered username "test1" and password "123456".
     "username": "test1",
     "password":"123456" }' -H "Content-Type: application/json" http://localhost:8080/api/auth/signup
 
-### Failed Response
+### Error Response:
 
 **Code** : `400 Bad Request`
 
@@ -129,7 +129,7 @@ Login response, for an unregistered user with username test2 on the local databa
     "username": "test2",
     "password":"123456" }' -H "Content-Type: application/json" http://localhost:8080/api/auth/signin
   
-### Failed Response: 
+### Error Response:
 
 **Code** : `404 Not Found`
 **Content examples**
@@ -152,7 +152,7 @@ For an existing user with username test1 on the local database, but user passwor
     "username": "test1",
     "password":"654321" }' -H "Content-Type: application/json" http://localhost:8080/api/auth/signin
     
-### Failed Response:
+### Error Response:
 **Code** : `401 Unauthorized`
 
 **Content examples**
@@ -173,7 +173,7 @@ Login response, for an existing user with username test1 on the local database, 
     "username": "test1",
     "password":"654321" }' -H "Content-Type: application/json" http://localhost:8080/api/auth/signin
     
-### Failed Response:
+### Error Response:
 **Code** : `404 Not found`
 
 **Content examples**
