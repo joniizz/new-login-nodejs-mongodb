@@ -13,11 +13,24 @@ As a user login REST API, this back-end service allows:
 - User login return fail if a user is locked
 
 [create an anchor](#user-login)
-# Steps
+# Steps:
+1. Run the app
+2. Sign up 
+    - [Create a new user](#create-a-new-user)
+    - [Create an existing user](#create-an-existing-user)
+3. Sign in
+    - [Existing user login](#existing-user-login)
+    - [Non-existing user login](#non-existing-user-login)
+    - [User password wrong login](#user-password-wrong-login)
+    - [Locked user login](#locked-user-login)
+   
 ## Run the app
 
     docker run -it user-login-app-demo /bin/bash
     docker-compose up
+## Sign up functions: 
+- [Create a new user](#create-a-new-user)
+- [Create an existing user](#create-an-existing-user)
 
 ## Create a new user:
 Create user with a username "test1" and password "123456".
@@ -44,8 +57,35 @@ A new user with username test1 and password is stored on the local database.
     "message": "User added successfully!"
 }
 ```
+## Create an existing user:
+Create user with a registered username "test1" and password "123456".
 
-## User login:
+**URL** : `localhost:8080/api/auth/signup`
+
+**Method** : `POST`
+###### POST Request in terminal
+
+    curl -d '{
+    "username": "test1",
+    "password":"123456" }' -H "Content-Type: application/json" http://localhost:8080/api/auth/signup
+
+### Failed Response
+
+**Code** : `400 Bad Request`
+
+**Content examples**
+
+```json
+{
+    "message": "User added successfully!"
+}
+```
+## Sign in:
+- [Existing user login](#existing-user-login)
+- [Non-existing user login](#non-existing-user-login)
+- [User password wrong login](#user-password-wrong-login)
+- [Locked user login](#locked-user-login)
+## Existing User login:
 
 User login in with a correct username "test1" and correct password "123456".
 
@@ -76,18 +116,23 @@ A new user with username test1 and password is stored on the local database. And
 }
 ```
 
-### Failed Response 1: user not found
+## Non-existing user login
+Login response, for an unregistered user with username test2 on the local database:
+
+**URL** : `localhost:8080/api/auth/signin`
+
+**Method** : `POST`
 
 ###### POST Request in terminal
 
     curl -d '{
     "username": "test2",
     "password":"123456" }' -H "Content-Type: application/json" http://localhost:8080/api/auth/signin
+  
+### Failed Response: 
 
 **Code** : `404 Not Found`
-
 **Content examples**
-Login response, for an unregistered user with username test2 on the local database:
 
 ```json
 {
@@ -95,39 +140,43 @@ Login response, for an unregistered user with username test2 on the local databa
 }
 ```
 
+## User password wrong login
+For an existing user with username test1 on the local database, but user password is wrong.
 
-### Failed Response 2: wrond password
+**URL** : `localhost:8080/api/auth/signin`
 
+**Method** : `POST`
 ###### POST Request in terminal
 
     curl -d '{
     "username": "test1",
     "password":"654321" }' -H "Content-Type: application/json" http://localhost:8080/api/auth/signin
-
+    
+### Failed Response:
 **Code** : `401 Unauthorized`
 
 **Content examples**
-Login response, for an existing user with username test1 on the local database, but user password is wrong:
-
 ```json
 {
     "accessToken": null,
     "message": "Invalid password! You've tried: 0 times!"
 }
 ```
-### Failed Response 3: User is locked
+## Locked user login
+Login response, for an existing user with username test1 on the local database, but user password is wrong with 3 login attempts within 5 minutes
+**URL** : `localhost:8080/api/auth/signin`
 
+**Method** : `POST`
 ###### POST Request in terminal
 
     curl -d '{
     "username": "test1",
     "password":"654321" }' -H "Content-Type: application/json" http://localhost:8080/api/auth/signin
-
+    
+### Failed Response:
 **Code** : `404 Not found`
 
 **Content examples**
-Login response, for an existing user with username test1 on the local database, but user password is wrong with 3 login attempts within 5 minutes:
-
 ```json
 {
     "message": "User is locked! Wait until: 1/11/2022, 6:08:45 PM"
