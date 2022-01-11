@@ -1,5 +1,4 @@
-# REST API
-The REST API to the example app is described below.
+# User login REST API
 
 This is a basic User-login-app based on Express.js and MongoDB providing a REST API to login-db model.
 
