@@ -25,6 +25,7 @@ As a user login REST API, this back-end service allows:
    
 ## Run the app
 
+    cd new-login-nodejs-mongodb
     docker run -it user-login-app-demo /bin/bash
     docker-compose up
 ## Sign up functions: 
