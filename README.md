@@ -12,7 +12,7 @@ As a user login REST API, this back-end service allows:
 - Brute-force protection: A user has a maximum of 3 attempts within 5 minutes, otherwise, the user will be locked for 5 minutes;
 - User login return fail if a user is locked
 
-
+[create an anchor](#user-login)
 # Steps
 ## Run the app
 
@@ -86,7 +86,7 @@ A new user with username test1 and password is stored on the local database. And
 
 **Code** : `404 Not Found`
 
-**Content**
+**Content examples**
 Login response, for an unregistered user with username test2 on the local database:
 
 ```json
@@ -133,3 +133,4 @@ Login response, for an existing user with username test1 on the local database, 
     "message": "User is locked! Wait until: 1/11/2022, 6:08:45 PM"
 }
 ```
+
