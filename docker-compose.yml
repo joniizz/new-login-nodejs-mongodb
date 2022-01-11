@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  web:
+    container_name: app-container_1
+    image: user-login-app-demo
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    command: node server.js 
+    volumes:
+      - ./:/usr/src/app/code
+    environment:
+      - TZ=Australia/NSW
+      
+
+    ports:
+      - 8080:8080
+    depends_on:
+      - mongo
+  mongo:
+      container_name: mongo-container
+      image: mongo
+      volumes:
+      - ./:/usr/src/app/db
+      ports:
+      - '27017:27017'
+
+

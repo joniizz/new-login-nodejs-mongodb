@@ -1,6 +1,6 @@
 
 var db_config = {
-    HOST: "localhost",
+    HOST: "mongo",
     PORT: 27017,
     DB: "login_db"
 };

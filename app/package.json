@@ -2,7 +2,7 @@
   "name": "codetest1",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "mocha './app/test/**/*.js' --timeout 10000000000"
   },

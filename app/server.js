@@ -1,12 +1,12 @@
 const express = require("express");
 const cors = require("cors");
-const db = require("./app/models");
+const db = require("./models");
 
 
 const app = express();
 
 db.mongoose
-  .connect("mongodb://localhost:27017/login_db", {
+  .connect("mongodb://mongo:27017/login_db", {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -35,8 +35,8 @@ app.get("/", (req, res) => {
 });
 
 //routes
-require("./app/routes/auth.routes")(app);
-require("./app/routes/user.routes")(app);
+require("./routes/auth.routes")(app);
+require("./routes/user.routes")(app);
 
 
 module.exports = app.listen("8080", () => {
