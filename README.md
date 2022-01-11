@@ -2,7 +2,6 @@
 
 This is a basic User-login-app based on Express.js and MongoDB providing a REST API to login-db model.
 
-The entire application is contained within the 'new-login-nodejs-mongodb' folder.
 
 As a user login REST API, this back-end service allows:
 - User to login with a username and password;
@@ -24,6 +23,9 @@ As a user login REST API, this back-end service allows:
     - [Locked user login](#locked-user-login)
    
 ## Run the app
+The entire application is contained within the 'new-login-nodejs-mongodb/app' folder.
+
+Dockerfile and dcoker-compose.yml are in the 'newlogin-nodejs-mongodb' folder.
 
     cd new-login-nodejs-mongodb
     docker run -it user-login-app-demo /bin/bash
