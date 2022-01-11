@@ -11,7 +11,7 @@ As a user login REST API, this back-end service allows:
 - Brute-force protection: A user has a maximum of 3 attempts within 5 minutes, otherwise, the user will be locked for 5 minutes;
 - User login return fail if a user is locked
 
-[create an anchor](#user-login)
+
 # Steps:
 1. Run the app
 2. Sign up 
